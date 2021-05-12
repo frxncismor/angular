@@ -1,66 +1,74 @@
-# Estilos de componentes
+# Component styles
 
-Las aplicaciones de Angular son estilizadas con CSS estandar. Esto significa que puedes aplicar todo lo que sabes sobre hojas de estilo CSS, selectores, reglas y media queries directamente a las aplicaciones de Angular.
+Angular applications are styled with standard CSS. That means you can apply
+everything you know about CSS stylesheets, selectors, rules, and media queries
+directly to Angular applications.
 
-Adicionalmente, Angular puede agrupar _estilos de componentes_ con componentes,
-permitiendo un diseño mas modular que las hojas de estilo regulares.
+Additionally, Angular can bundle *component styles*
+with components, enabling a more modular design than regular stylesheets.
 
-Esta página describe como cargar y aplicar estos estilos de componentes.
+This page describes how to load and apply these component styles.
 
-Puedes ejecutar el <live-example></live-example> en Stackblitz y descargar el codigo desde ahí.
+You can run the <live-example></live-example> in Stackblitz and download the code from there.
 
-## Usando estilos de componentes
+## Using component styles
 
-Para cada componente Angular que escribes, puedes definir no solo una plantilla HTML, sino también los estilos CSS que van con esa plantilla,
-especificando los selectores, reglas y media queries que necesites.
+For every Angular component you write, you may define not only an HTML template,
+but also the CSS styles that go with that template,
+specifying any selectors, rules, and media queries that you need.
 
-Una forma de hacer esto es estableciendo la propiedad `styles` en la metadata del componente.
-La propiedad `styles` toma un array de strings que contiene el codigo CSS.
-Usualmente tu le das una cadena de caracteres, como en el siguiente ejemplo:
+One way to do this is to set the `styles` property in the component metadata.
+The `styles` property takes an array of strings that contain CSS code.
+Usually you give it one string, as in the following example:
 
 <code-example path="component-styles/src/app/hero-app.component.ts" header="src/app/hero-app.component.ts"></code-example>
 
-## Alcance del estilo
+## Style scope
 
 <div class="alert is-critical">
 
-Los estilos especificados en la metadata de `@Component` _aplican solo en la plantilla de ese componente_.
+The styles specified in `@Component` metadata _apply only within the template of that component_.
 
 </div>
 
-_No son heredados_ por ningún componente anidado dentro de la plantilla ni por ningún contenido proyectado en el componente.
+They are _not inherited_ by any components nested within the template nor by any content projected into the component.
 
-En este ejemplo, el estilo `h1` aplica solo a `HeroAppComponent`,
-no al `HeroMainComponent` anidado ni a las etiquetas `<h1>` en cualquier otro lugar de la aplicación.
+In this example, the `h1` style applies only to the `HeroAppComponent`,
+not to the nested `HeroMainComponent` nor to `<h1>` tags anywhere else in the application.
 
-Esta restricción de alcance es una **_característica modular de estilo_**.
+This scoping restriction is a ***styling modularity feature***.
 
-- Puedes utilizar los selectores nombres de clase CSS que tengan más sentido en el contexto de cada componente.
+* You can use the CSS class names and selectors that make the most sense in the context of each component.
 
-- Los nombres de clase y los selectores son locales del componente y no chocan con
-  clases y selectores utilizados en otras partes de la aplicación.
 
-- Los cambios de estilos en otras partes de la aplicación no afectan los estilos del componente.
+* Class names and selectors are local to the component and don't collide with
+  classes and selectors used elsewhere in the application.
 
-- Puedes ubicar el código CSS de cada componente con el código TypeScript y HTML del componente,
-  lo que conduce a una estructura de proyecto ordenada y limpa.
 
-- Puedes cambiar o eliminar el código CSS del componente sin buscar en el
-  toda la aplicación para encontrar en dónde más se usa el código.
+* Changes to styles elsewhere in the application don't affect the component's styles.
+
+
+* You can co-locate the CSS code of each component with the TypeScript and HTML code of the component,
+  which leads to a neat and tidy project structure.
+
+
+* You can change or remove component CSS code without searching through the
+  whole application to find where else the code is used.
 
 {@a special-selectors}
 
-## Selectores especiales
+## Special selectors
 
-Component styles have a few special _selectors_ from the world of shadow DOM style scoping
+Component styles have a few special *selectors* from the world of shadow DOM style scoping
 (described in the [CSS Scoping Module Level 1](https://www.w3.org/TR/css-scoping-1) page on the
 [W3C](https://www.w3.org) site).
 The following sections describe these selectors.
 
 ### :host
 
-Use the `:host` pseudo-class selector to target styles in the element that _hosts_ the component (as opposed to
-targeting elements _inside_ the component's template).
+Use the `:host` pseudo-class selector to target styles in the element that *hosts* the component (as opposed to
+targeting elements *inside* the component's template).
+
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="host" header="src/app/hero-details.component.css"></code-example>
 
@@ -68,7 +76,7 @@ The `:host` selector is the only way to target the host element. You can't reach
 the host element from inside the component with other selectors because it's not part of the
 component's own template. The host element is in a parent component's template.
 
-Use the _function form_ to apply host styles conditionally by
+Use the *function form* to apply host styles conditionally by
 including another selector inside parentheses after `:host`.
 
 The next example targets the host element again, but only when it also has the `active` CSS class.
@@ -77,7 +85,7 @@ The next example targets the host element again, but only when it also has the `
 
 ### :host-context
 
-Sometimes it's useful to apply styles based on some condition _outside_ of a component's view.
+Sometimes it's useful to apply styles based on some condition *outside* of a component's view.
 For example, a CSS theme class could be applied to the document `<body>` element, and
 you want to change how your component looks based on that.
 
@@ -85,7 +93,7 @@ Use the `:host-context()` pseudo-class selector, which works just like the funct
 form of `:host()`. The `:host-context()` selector looks for a CSS class in any ancestor of the component host element,
 up to the document root. The `:host-context()` selector is useful when combined with another selector.
 
-The following example applies a `background-color` style to all `<h2>` elements _inside_ the component, only
+The following example applies a `background-color` style to all `<h2>` elements *inside* the component, only
 if some ancestor element has the CSS class `theme-light`.
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="hostcontext" header="src/app/hero-details.component.css"></code-example>
@@ -109,7 +117,7 @@ The `/deep/` combinator also has the aliases `>>>`, and `::ng-deep`.
 
 <div class="alert is-important">
 
-Use `/deep/`, `>>>` and `::ng-deep` only with _emulated_ view encapsulation.
+Use `/deep/`, `>>>` and `::ng-deep` only with *emulated* view encapsulation.
 Emulated is the default and most commonly used view encapsulation. For more information, see the
 [Controlling view encapsulation](guide/component-styles#view-encapsulation) section.
 
@@ -129,9 +137,9 @@ Until then `::ng-deep` should be preferred for a broader compatibility with the 
 
 There are several ways to add styles to a component:
 
-- By setting `styles` or `styleUrls` metadata.
-- Inline in the template HTML.
-- With CSS imports.
+* By setting `styles` or `styleUrls` metadata.
+* Inline in the template HTML.
+* With CSS imports.
 
 The scoping rules outlined earlier apply to each of these loading patterns.
 
@@ -176,7 +184,7 @@ They are _not inherited_ by any components nested within the template nor by any
 
 <div class="alert is-helpful">
 
-You can specify more than one styles file or even a combination of `styles` and `styleUrls`.
+  You can specify more than one styles file or even a combination of `styles` and `styleUrls`.
 
 </div>
 
@@ -204,7 +212,6 @@ You can also write `<link>` tags into the component's HTML template.
 <div class="alert is-critical">
 
 When building with the CLI, be sure to include the linked style file among the assets to be copied to the server as described in the [CLI wiki](https://github.com/angular/angular-cli/wiki/stories-asset-configuration).
-
 <!-- 2018-10-16: The link above is still the best source for this information. -->
 
 Once included, the CLI will include the stylesheet, whether the link tag's href URL is relative to the application root or the component file.
@@ -229,8 +236,8 @@ When building with the CLI, you must configure the `angular.json` to include _al
 Register **global** style files in the `styles` section which, by default, is pre-configured with the global `styles.css` file.
 
 See the [CLI wiki](https://github.com/angular/angular-cli/wiki/stories-global-styles) to learn more.
-
 <!-- 2018-10-16: The link above is still the best source for this information. -->
+
 
 ### Non-CSS style files
 
@@ -250,9 +257,10 @@ The CLI build process runs the pertinent CSS preprocessor.
 
 When generating a component file with `ng generate component`, the CLI emits an empty CSS styles file (`.css`) by default.
 You can configure the CLI to default to your preferred CSS preprocessor
-as explained in the [CLI wiki](https://github.com/angular/angular-cli/wiki/stories-css-preprocessors "CSS Preprocessor integration").
-
+as explained in the [CLI wiki](https://github.com/angular/angular-cli/wiki/stories-css-preprocessors
+"CSS Preprocessor integration").
 <!-- 2018-10-16: The link above is still the best source for this information. -->
+
 
 <div class="alert is-important">
 
@@ -267,23 +275,23 @@ Style strings added to the `@Component.styles` array _must be written in CSS_ be
 As discussed earlier, component CSS styles are encapsulated into the component's view and don't
 affect the rest of the application.
 
-To control how this encapsulation happens on a _per
-component_ basis, you can set the _view encapsulation mode_ in the component metadata.
+To control how this encapsulation happens on a *per
+component* basis, you can set the *view encapsulation mode* in the component metadata.
 Choose from the following modes:
 
-- `ShadowDom` view encapsulation uses the browser's native shadow DOM implementation (see
+* `ShadowDom` view encapsulation uses the browser's native shadow DOM implementation (see
   [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM)
   on the [MDN](https://developer.mozilla.org) site)
   to attach a shadow DOM to the component's host element, and then puts the component
   view inside that shadow DOM. The component's styles are included within the shadow DOM.
 
-- `Native` view encapsulation uses a now deprecated version of the browser's native shadow DOM implementation - [learn about the changes](https://hayato.io/2016/shadowdomv1/).
+* `Native` view encapsulation uses a now deprecated version of the browser's native shadow DOM implementation - [learn about the changes](https://hayato.io/2016/shadowdomv1/).
 
-- `Emulated` view encapsulation (the default) emulates the behavior of shadow DOM by preprocessing
+* `Emulated` view encapsulation (the default) emulates the behavior of shadow DOM by preprocessing
   (and renaming) the CSS code to effectively scope the CSS to the component's view.
   For details, see [Inspecting generated CSS](guide/component-styles#inspect-generated-css) below.
 
-- `None` means that Angular does no view encapsulation.
+* `None` means that Angular does no view encapsulation.
   Angular adds the CSS to the global styles.
   The scoping rules, isolations, and protections discussed earlier don't apply.
   This is essentially the same as pasting the component's styles into the HTML.
@@ -321,10 +329,10 @@ attached to it:
 
 There are two kinds of generated attributes:
 
-- An element that would be a shadow DOM host in native encapsulation has a
+* An element that would be a shadow DOM host in native encapsulation has a
   generated `_nghost` attribute. This is typically the case for component host elements.
-- An element within a component's view has a `_ngcontent` attribute
-  that identifies to which host's emulated shadow DOM this element belongs.
+* An element within a component's view has a `_ngcontent` attribute
+that identifies to which host's emulated shadow DOM this element belongs.
 
 The exact values of these attributes aren't important. They are automatically
 generated and you never refer to them in application code. But they are targeted
@@ -336,10 +344,10 @@ by the generated component styles, which are in the `<head>` section of the DOM:
     border: 1px solid black;
   }
 
-h3[_ngcontent-pmm-6] {
-background-color: white;
-border: 1px solid #777;
-}
+  h3[_ngcontent-pmm-6] {
+    background-color: white;
+    border: 1px solid #777;
+  }
 </code-example>
 
 These styles are post-processed so that each selector is augmented
