@@ -1,22 +1,22 @@
 # Estilos de componentes
 
-Las aplicaciones de Angular son estilizadas con CSS estandar. Esto significa que puedes aplicar todo lo que sabes sobre hojas de estilo CSS, selectores, reglas y media queries directamente a las aplicaciones de Angular.
+Las aplicaciones de Angular son estilizadas con CSS estandar. Esto significa que usted puede aplicar todo lo que sabe sobre hojas de estilo CSS, selectores, reglas y media queries directamente a las aplicaciones de Angular.
 
 Adicionalmente, Angular puede agrupar _estilos de componentes_ con componentes,
 permitiendo un diseño mas modular que las hojas de estilo regulares.
 
 Esta página describe como cargar y aplicar estos estilos de componentes.
 
-Puedes ejecutar el <live-example></live-example> en Stackblitz y descargar el codigo desde ahí.
+Puede ejecutar el <live-example></live-example> en Stackblitz y descargar el codigo desde ahí.
 
 ## Usando estilos de componentes
 
-Para cada componente Angular que escribes, puedes definir no solo una plantilla HTML, sino también los estilos CSS que van con esa plantilla,
-especificando los selectores, reglas y media queries que necesites.
+Para cada componente Angular que escribe, puede definir no solo una plantilla HTML, sino también los estilos CSS que van con esa plantilla,
+especificando los selectores, reglas y media queries que necesite.
 
 Una forma de hacer esto es estableciendo la propiedad `styles` en la metadata del componente.
 La propiedad `styles` toma un array de strings que contiene el codigo CSS.
-Usualmente tu le das una cadena de caracteres, como en el siguiente ejemplo:
+Usualmente usted le da una cadena de caracteres, como en el siguiente ejemplo:
 
 <code-example path="component-styles/src/app/hero-app.component.ts" header="src/app/hero-app.component.ts"></code-example>
 
@@ -35,91 +35,80 @@ no al `HeroMainComponent` anidado ni a las etiquetas `<h1>` en cualquier otro lu
 
 Esta restricción de alcance es una **_característica modular de estilo_**.
 
-- Puedes utilizar los selectores nombres de clase CSS que tengan más sentido en el contexto de cada componente.
+- Puede utilizar los selectores nombres de clase CSS que tengan más sentido en el contexto de cada componente.
 
 - Los nombres de clase y los selectores son locales del componente y no chocan con
   clases y selectores utilizados en otras partes de la aplicación.
 
 - Los cambios de estilos en otras partes de la aplicación no afectan los estilos del componente.
 
-- Puedes ubicar el código CSS de cada componente con el código TypeScript y HTML del componente,
+- Puede ubicar el código CSS de cada componente con el código TypeScript y HTML del componente,
   lo que conduce a una estructura de proyecto ordenada y limpa.
 
-- Puedes cambiar o eliminar el código CSS del componente sin buscar en el
+- Puede cambiar o eliminar el código CSS del componente sin buscar en el
   toda la aplicación para encontrar en dónde más se usa el código.
 
 {@a special-selectors}
 
 ## Selectores especiales
 
-Component styles have a few special _selectors_ from the world of shadow DOM style scoping
-(described in the [CSS Scoping Module Level 1](https://www.w3.org/TR/css-scoping-1) page on the
-[W3C](https://www.w3.org) site).
-The following sections describe these selectors.
+Los estilos de componentes tienen algunos _selectores_ especiales del mundo del alcance de estilos DOM de sombra (Shadow DOM)
+(descritos en la página [CSS Scoping Module Level 1](https://www.w3.org/TR/css-scoping-1) en el sitio [W3C](https://www.w3.org))
 
+Las siguientes secciones describen estos selectores.
 ### :host
 
-Use the `:host` pseudo-class selector to target styles in the element that _hosts_ the component (as opposed to
-targeting elements _inside_ the component's template).
+Utilice el selector de pseudo clase `:host` para seleccionar estilos en el elemento que _aloja_ el componente (opuesto a los elementos seleccionados _dentro_ de la plantilla del componente).
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="host" header="src/app/hero-details.component.css"></code-example>
 
-The `:host` selector is the only way to target the host element. You can't reach
-the host element from inside the component with other selectors because it's not part of the
-component's own template. The host element is in a parent component's template.
+El selector `:host` es la unica manera de seleccionar el elemento anfitrión. No puede alcanzar el elemento anfitrión desde adentro del componente con otros selectores porque no es parte de la propia plantilla del componente. El elemento anfitrión está en la plantilla de un componente principal.
 
-Use the _function form_ to apply host styles conditionally by
-including another selector inside parentheses after `:host`.
+Utilice el _formulario de función_ para aplicar estilos de anfitrión condicionalmente incluyendo otro selector entre paréntesis después de `:host`
 
-The next example targets the host element again, but only when it also has the `active` CSS class.
+El siguiente ejemplo selecciona el elemento anfitrión otra vez, pero solo cuando también tiene la clase CSS `active`.
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="hostfunction" header="src/app/hero-details.component.css"></code-example>
 
 ### :host-context
 
-Sometimes it's useful to apply styles based on some condition _outside_ of a component's view.
-For example, a CSS theme class could be applied to the document `<body>` element, and
-you want to change how your component looks based on that.
+A veces es útil aplicar estilos basados en una condición _fuera_ de la vista de un componente.
+Por ejemplo, una clase de tema CSS puede ser aplicada al elemento del documento `<body>`, y usted quiere cambiar como su componente se ve en base a eso.
 
-Use the `:host-context()` pseudo-class selector, which works just like the function
-form of `:host()`. The `:host-context()` selector looks for a CSS class in any ancestor of the component host element,
-up to the document root. The `:host-context()` selector is useful when combined with another selector.
+Utilice el selector de la pseudo-clase `:host-context()`, el cual trabaja como la función de forma de `:host()`. El selector `:host-context()` busca una clase CSS en cualquier antepasado del elemento host del componente,
+hasta la raíz del documento. El selector `: host-context ()` es útil cuando se combina con otro selector.
 
-The following example applies a `background-color` style to all `<h2>` elements _inside_ the component, only
-if some ancestor element has the CSS class `theme-light`.
+El siguiente ejemplo aplica un estilo `background-color` a todos los elementos `<h2>` _dentro_ del componente, solo si algún elemento ancestro tiene la clase CSS `theme-light`.
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="hostcontext" header="src/app/hero-details.component.css"></code-example>
 
-### (deprecated) `/deep/`, `>>>`, and `::ng-deep`
+### (obsoleto) `/deep/`, `>>>`, and `::ng-deep`
 
-Component styles normally apply only to the HTML in the component's own template.
+Los estilos de componentes normalmente aplican solo al HTML en la propia plantilla del componente.
 
-Applying the `::ng-deep` pseudo-class to any CSS rule completely disables view-encapsulation for
-that rule. Any style with `::ng-deep` applied becomes a global style. In order to scope the specified style
-to the current component and all its descendants, be sure to include the `:host` selector before
-`::ng-deep`. If the `::ng-deep` combinator is used without the `:host` pseudo-class selector, the style
-can bleed into other components.
+La acplicación de la pseudo-clase `::ng-deep` a cualquier regla de CSS deshabilita completamente la encapsulación de vistas para esa regla. Cualquier estilo con `::ng-deep` aplicado se convierte en un estilo global. Para alcanzar el estilo especificado al componente actual y todos sus descendientes, asegúrese de incluir el selector `:host` antes de `::ng-deep`. Si el combinador `:: ng-deep` se usa sin el selector de pseudoclase`: host`, el estilo puede salirse a otros componentes.
 
-The following example targets all `<h3>` elements, from the host element down
-through this component to all of its child elements in the DOM.
+El siguiente ejemplo apunta a todos los elementos `<h3>`, desde el elemento host hacia abajo
+a través de este componente a todos sus elementos hijos en el DOM.
 
 <code-example path="component-styles/src/app/hero-details.component.css" region="deep" header="src/app/hero-details.component.css"></code-example>
 
-The `/deep/` combinator also has the aliases `>>>`, and `::ng-deep`.
+El combinador `/deep/` también tiene los alias `>>>` y `:: ng-deep`.
 
 <div class="alert is-important">
 
-Use `/deep/`, `>>>` and `::ng-deep` only with _emulated_ view encapsulation.
-Emulated is the default and most commonly used view encapsulation. For more information, see the
-[Controlling view encapsulation](guide/component-styles#view-encapsulation) section.
+Utilice `/deep/`, `>>>` y `::ng-deep` solo con la encapsulación de vista _emulada_.
+
+Emulada es la encapsulación de vista predeterminada y más utilizada. Para obtener más información, consulte la sección [Controlar la encapsulación de vistas](guide/component-styles#view-encapsulation) 
 
 </div>
 
 <div class="alert is-important">
 
-The shadow-piercing descendant combinator is deprecated and [support is being removed from major browsers](https://www.chromestatus.com/features/6750456638341120) and tools.
-As such we plan to drop support in Angular (for all 3 of `/deep/`, `>>>` and `::ng-deep`).
-Until then `::ng-deep` should be preferred for a broader compatibility with the tools.
+El combinador descendiente que perfora las sombras está en desuso y se está eliminando el [soporte de los principales navegadores](https://www.chromestatus.com/features/6750456638341120) y herramientas.
+
+Como tal, planeamos eliminar el soporte en Angular (para los 3 de `/ deep /`, `>>>` y `:: ng-deep`).
+Hasta entonces, se debería preferir `:: ng-deep` para una compatibilidad más amplia con las herramientas.
 
 </div>
 
